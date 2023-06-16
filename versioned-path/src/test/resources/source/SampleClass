@@ -1,0 +1,93 @@
+-----------------------------------ga.josejulio.versioned.path.VersionedAnnotationProcessorTest_SampleV1_0.java-----------------------------------
+
+package ga.josejulio.versioned.path;
+
+import com.karuslabs.elementary.junit.annotations.Case;
+import ga.josejulio.versioned.path.VersionedAnnotationProcessorTest.Sample;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+
+@Case("SAMPLE_CLASS")
+@Path("/api/1.0/")
+public class VersionedAnnotationProcessorTest_SampleV1_0
+    extends Sample
+{
+
+
+    @Override
+    @GET
+    public int common() {
+        return super.common();
+    }
+
+    @Override
+    @Path("stuff")
+    @PUT
+    public int v1Stuff() {
+        return super.v1Stuff();
+    }
+
+}
+-----------------------------------ga.josejulio.versioned.path.VersionedAnnotationProcessorTest_SampleV2_0.java-----------------------------------
+
+package ga.josejulio.versioned.path;
+
+import com.karuslabs.elementary.junit.annotations.Case;
+import ga.josejulio.versioned.path.VersionedAnnotationProcessorTest.Sample;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+
+@Case("SAMPLE_CLASS")
+@Path("/api/2.0/")
+public class VersionedAnnotationProcessorTest_SampleV2_0
+    extends Sample
+{
+
+
+    @Override
+    @GET
+    public int common() {
+        return super.common();
+    }
+
+    @Override
+    @Path("stuff")
+    @PUT
+    public float v2Stuff() {
+        return super.v2Stuff();
+    }
+
+}
+-----------------------------------ga.josejulio.versioned.path.VersionedAnnotationProcessorTest_SampleV3_1.java-----------------------------------
+
+package ga.josejulio.versioned.path;
+
+import com.karuslabs.elementary.junit.annotations.Case;
+import ga.josejulio.versioned.path.VersionedAnnotationProcessorTest.Sample;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+
+@Case("SAMPLE_CLASS")
+@Path("/api/3.1/")
+public class VersionedAnnotationProcessorTest_SampleV3_1
+    extends Sample
+{
+
+
+    @Override
+    @GET
+    public int common() {
+        return super.common();
+    }
+
+    @Override
+    @Path("stuff")
+    @PUT
+    public double v3Stuff(int param) {
+        return super.v3Stuff(param);
+    }
+
+}
