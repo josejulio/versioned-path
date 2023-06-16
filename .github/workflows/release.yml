@@ -1,0 +1,34 @@
+on:
+  push:
+    branches:
+      - main
+name: release
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      pr: ${{ steps.release.outputs.pr }}
+    steps:
+      - id: release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: maven
+          token: ${{ secrets.BOT_TOKEN }}
+          package-name: com.redhat.cloud.event.event-schemas
+          extra-files: |
+            README.md
+  auto-merge-snapshot:
+    needs: [ release ]
+    runs-on: ubuntu-latest
+    if: "${{ needs.release.outputs.pr && contains(fromJSON(needs.release.outputs.pr).labels, 'autorelease: snapshot') }}"
+    steps:
+      - id: auto-merge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          MERGE_LABELS: "autorelease: snapshot"
+          MERGE_METHOD: rebase
+          MERGE_RETRIES: 10
+          MERGE_RETRY_SLEEP: 10000
+          PULL_REQUEST: ${{ fromJSON(needs.release.outputs.pr).number }}
+          GITHUB_TOKEN: "${{ secrets.BOT_TOKEN }}"
