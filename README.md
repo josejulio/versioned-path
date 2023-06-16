@@ -1,5 +1,5 @@
 # Versioned path
-[![Release](https://jitpack.io/v/josejulio/versioned-.svg)](https://jitpack.io/#User/Repo)
+[![Release](https://jitpack.io/v/josejulio/versioned-path.svg)](https://jitpack.io/#josejulio/versioned-path)
 
 A library to reuse rest endpoints in multiple API versions within the same application
 
