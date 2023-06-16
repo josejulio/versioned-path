@@ -12,7 +12,7 @@
     <modules>
         <module>annotation-processor-codemodel-toolkit</module>
         <module>versioned-path</module>
-        <module>examples/versioned-api-sample</module>
+        <module>versioned-api-sample</module>
     </modules>
 
     <properties>
