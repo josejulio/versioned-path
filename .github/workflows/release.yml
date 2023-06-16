@@ -15,7 +15,7 @@ jobs:
         with:
           release-type: maven
           token: ${{ secrets.BOT_TOKEN }}
-          package-name: com.redhat.cloud.event.event-schemas
+          package-name: ga.josejulio.versioned-path
           extra-files: |
             README.md
   auto-merge-snapshot:
