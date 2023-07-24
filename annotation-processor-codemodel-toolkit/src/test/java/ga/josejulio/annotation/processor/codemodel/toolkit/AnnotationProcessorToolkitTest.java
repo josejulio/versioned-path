@@ -1,10 +1,10 @@
 package ga.josejulio.annotation.processor.codemodel.toolkit;
 
-import com.karuslabs.elementary.junit.Cases;
+import com.karuslabs.elementary.junit.Labels;
 import com.karuslabs.elementary.junit.Tools;
 import com.karuslabs.elementary.junit.ToolsExtension;
-import com.karuslabs.elementary.junit.annotations.Case;
 import com.karuslabs.elementary.junit.annotations.Introspect;
+import com.karuslabs.elementary.junit.annotations.Label;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
@@ -46,14 +46,14 @@ public class AnnotationProcessorToolkitTest {
             Tools.types()
     );
 
-    @Case(CASE_SAMPLE_TEST_CLASS)
+    @Label(CASE_SAMPLE_TEST_CLASS)
     class SampleTest {
 
-        @Case(CASE_ATTRIBUTE_GENERIC)
+        @Label(CASE_ATTRIBUTE_GENERIC)
         private final Map<String, Map<String, SampleTest>> map = new HashMap<>();
 
         @Deprecated
-        @Case(CASE_INNER_CLASS)
+        @Label(CASE_INNER_CLASS)
         class InnerSampleTest extends SampleTest {
             public void bar(int xyz) {
 
@@ -66,12 +66,12 @@ public class AnnotationProcessorToolkitTest {
         }
 
         @Deprecated
-        @Case(CASE_FOO_METHOD)
+        @Label(CASE_FOO_METHOD)
         public int foo(float param0, Object param1, SampleTest param2) {
             return 5;
         }
 
-        @Case(CASE_INTEGER_METHOD)
+        @Label(CASE_INTEGER_METHOD)
         public Integer integer() {
             return 2;
         }
@@ -79,14 +79,14 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void toClassTest(Cases cases) {
-        Element element = cases.one(CASE_SAMPLE_TEST_CLASS);
+    void toClassTest(Labels labels) {
+        Element element = labels.get(CASE_SAMPLE_TEST_CLASS);
         assertNotNull(element);
 
         Class<?> klass = toolkit.toClass(element);
         assertEquals(SampleTest.class, klass);
 
-        final Element fooMethodElement = cases.one(CASE_FOO_METHOD);
+        final Element fooMethodElement = labels.get(CASE_FOO_METHOD);
         assertNotNull(fooMethodElement);
         assertThrows(AnnotationProcessingException.class, () -> toolkit.toClass(fooMethodElement));
 
@@ -110,7 +110,7 @@ public class AnnotationProcessorToolkitTest {
         assertEquals(SampleTest.class, toolkit.toClass(params.get(2)));
 
         // Lets try with an Integer object
-        final Element integerMethodElement = cases.one(CASE_INTEGER_METHOD);
+        final Element integerMethodElement = labels.get(CASE_INTEGER_METHOD);
         ExecutableElement executableIntegerElement = (ExecutableElement) integerMethodElement;
         returnType = executableIntegerElement.getReturnType();
         assertNotNull(returnType);
@@ -123,8 +123,8 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void toClassInnerClassTest(Cases cases) {
-        Element element = cases.one(CASE_INNER_CLASS);
+    void toClassInnerClassTest(Labels labels) {
+        Element element = labels.get(CASE_INNER_CLASS);
         assertNotNull(element);
 
         Class<?> klass = toolkit.toClass(element);
@@ -132,34 +132,34 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void toClassAnnotationTest(Cases cases) {
-        Element element = cases.one(CASE_INNER_CLASS);
+    void toClassAnnotationTest(Labels labels) {
+        Element element = labels.get(CASE_INNER_CLASS);
         assertNotNull(element);
 
         List <? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
         assertEquals(2, annotations.size());
 
         assertEquals(Deprecated.class, toolkit.toClass(annotations.get(0)));
-        assertEquals(Case.class, toolkit.toClass(annotations.get(1)));
+        assertEquals(Label.class, toolkit.toClass(annotations.get(1)));
     }
 
     @Test
-    void toClassGeneric(Cases cases) {
-        Element element = cases.one(CASE_ATTRIBUTE_GENERIC);
+    void toClassGeneric(Labels labels) {
+        Element element = labels.get(CASE_ATTRIBUTE_GENERIC);
         assertNotNull(element);
 
         assertEquals(Map.class, toolkit.toClass(element));
     }
 
     @Test
-    void toJTypeTest(Cases cases) {
-        Element element = cases.one(CASE_SAMPLE_TEST_CLASS);
+    void toJTypeTest(Labels labels) {
+        Element element = labels.get(CASE_SAMPLE_TEST_CLASS);
         assertNotNull(element);
 
         JType jType = toolkit.toJType(element);
         assertJClass(jType, SampleTest.class);
 
-        final Element fooMethodElement = cases.one(CASE_FOO_METHOD);
+        final Element fooMethodElement = labels.get(CASE_FOO_METHOD);
         assertNotNull(fooMethodElement);
         assertThrows(AnnotationProcessingException.class, () -> toolkit.toJType(fooMethodElement));
 
@@ -184,7 +184,7 @@ public class AnnotationProcessorToolkitTest {
         assertJClass(toolkit.toJType(params.get(2)), SampleTest.class);
 
         // Lets try with an Integer object
-        final Element integerMethodElement = cases.one(CASE_INTEGER_METHOD);
+        final Element integerMethodElement = labels.get(CASE_INTEGER_METHOD);
         ExecutableElement executableIntegerElement = (ExecutableElement) integerMethodElement;
         returnType = executableIntegerElement.getReturnType();
         assertNotNull(returnType);
@@ -197,8 +197,8 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void toJTypeInnerClassTest(Cases cases) {
-        Element element = cases.one(CASE_INNER_CLASS);
+    void toJTypeInnerClassTest(Labels labels) {
+        Element element = labels.get(CASE_INNER_CLASS);
         assertNotNull(element);
 
         JType jType = toolkit.toJType(element);
@@ -206,20 +206,20 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void toJTypeAnnotationTest(Cases cases) {
-        Element element = cases.one(CASE_INNER_CLASS);
+    void toJTypeAnnotationTest(Labels labels) {
+        Element element = labels.get(CASE_INNER_CLASS);
         assertNotNull(element);
 
         List <? extends AnnotationMirror> annotations = element.getAnnotationMirrors();
         assertEquals(2, annotations.size());
 
         assertJClass(toolkit.toJType(annotations.get(0)), Deprecated.class);
-        assertJClass(toolkit.toJType(annotations.get(1)), Case.class);
+        assertJClass(toolkit.toJType(annotations.get(1)), Label.class);
     }
 
     @Test
-    void toJTypeGeneric(Cases cases) {
-        Element element = cases.one(CASE_ATTRIBUTE_GENERIC);
+    void toJTypeGeneric(Labels cases) {
+        Element element = cases.get(CASE_ATTRIBUTE_GENERIC);
         assertNotNull(element);
 
         assertJClass(toolkit.toJType(element), new ClassDefinitionAssert(
@@ -230,8 +230,8 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void extendClassSuperClassTest(Cases cases) {
-        Element element = cases.one(CASE_SAMPLE_TEST_CLASS);
+    void extendClassSuperClassTest(Labels labels) {
+        Element element = labels.get(CASE_SAMPLE_TEST_CLASS);
         assertNotNull(element);
 
         JDefinedClass klass = toolkit.extendFromClass("com.redhat.extendClassSuperClassTest", element);
@@ -240,8 +240,8 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void extendClassInnerClassTest(Cases cases) {
-        Element element = cases.one(CASE_INNER_CLASS);
+    void extendClassInnerClassTest(Labels labels) {
+        Element element = labels.get(CASE_INNER_CLASS);
         assertNotNull(element);
 
         JDefinedClass klass = toolkit.extendFromClass("com.redhat.extendClassInnerClassTest", element);
@@ -249,14 +249,14 @@ public class AnnotationProcessorToolkitTest {
     }
 
     @Test
-    void overrideMethodTest(Cases cases) {
-        Element element = cases.one(CASE_SAMPLE_TEST_CLASS);
+    void overrideMethodTest(Labels labels) {
+        Element element = labels.get(CASE_SAMPLE_TEST_CLASS);
         assertNotNull(element);
 
         JDefinedClass klass = toolkit.extendFromClass("com.redhat.extendClassSuperClassTest", element);
         assertTrue(klass.methods().isEmpty());
 
-        Element fooMethod = cases.one(CASE_FOO_METHOD);
+        Element fooMethod = labels.get(CASE_FOO_METHOD);
         assertNotNull(fooMethod);
 
         JMethod overridenMethod = toolkit.overrideMethod(klass, (ExecutableElement) fooMethod, List.of());
@@ -284,7 +284,7 @@ public class AnnotationProcessorToolkitTest {
         assertEquals(3, annotations.size());
         assertEquals(codeModel.ref(Override.class).fullName(), annotations.get(0).getAnnotationClass().fullName());
         assertEquals(codeModel.ref(Deprecated.class).fullName(), annotations.get(1).getAnnotationClass().fullName());
-        assertEquals(codeModel.ref(Case.class).fullName(), annotations.get(2).getAnnotationClass().fullName());
+        assertEquals(codeModel.ref(Label.class).fullName(), annotations.get(2).getAnnotationClass().fullName());
         assertEquals(1, annotations.get(2).getAnnotationMembers().size());
         assertEquals(CASE_FOO_METHOD, annotations.get(2).getAnnotationMembers().get("value").toString());
     }

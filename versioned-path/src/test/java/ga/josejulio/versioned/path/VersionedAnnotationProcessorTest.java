@@ -1,10 +1,10 @@
 package ga.josejulio.versioned.path;
 
-import com.karuslabs.elementary.junit.Cases;
+import com.karuslabs.elementary.junit.Labels;
 import com.karuslabs.elementary.junit.Tools;
 import com.karuslabs.elementary.junit.ToolsExtension;
-import com.karuslabs.elementary.junit.annotations.Case;
 import com.karuslabs.elementary.junit.annotations.Introspect;
+import com.karuslabs.elementary.junit.annotations.Label;
 import com.sun.codemodel.JAnnotatable;
 import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JCodeModel;
@@ -38,7 +38,7 @@ public class VersionedAnnotationProcessorTest {
     private static final String CASE_SAMPLE_CLASS = "SAMPLE_CLASS";
 
     @VersionedPath(sinceVersion = "1.0", path = "/api/$version/")
-    @Case(CASE_SAMPLE_CLASS)
+    @Label(CASE_SAMPLE_CLASS)
     class Sample {
 
         @VersionedMethod(value = VersionedMethod.HttpMethod.GET)
@@ -73,12 +73,12 @@ public class VersionedAnnotationProcessorTest {
     }
 
     @Test
-    public void classWithMultipleVersionsTest(Cases cases) throws IOException {
+    public void classWithMultipleVersionsTest(Labels labels) throws IOException {
         JCodeModel codeModel = new JCodeModel();
         VersionedAnnotationProcessor versionedAnnotationProcessor = new VersionedAnnotationProcessor();
         versionedAnnotationProcessor.init(codeModel, Tools.elements(), Tools.messager(), Tools.filer(), Tools.types());
 
-        Element element = cases.one(CASE_SAMPLE_CLASS);
+        Element element = labels.get(CASE_SAMPLE_CLASS);
         assertNotNull(element);
 
         List<JDefinedClass> createdClasses = versionedAnnotationProcessor.processClass(element);
